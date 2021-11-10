@@ -10,7 +10,7 @@ global_config = get_driver().config
 config = Config(**global_config.dict())
 
 country_code = {"cn": "ZH", "jp": "JA", "en": "EN-US", "fr": "FR", "ru": "RU", "de": "DE", "es": "ES"}
-DeepL = DeepL(config.api_keys)
+DeepL = DeepL(config.deepl_api_keys)
 
 
 # Rules
