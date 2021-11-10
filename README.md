@@ -48,13 +48,13 @@ DEEPL_API_KEYS = ['Your_API_Here', 'Another_API']
 
 > 例如:
 >
-> A: jp你好世界
->
-> 
->
 > > A: jp你好世界
->
-> Bot: ハロー・ワールド
+> >
+> >
+> >
+> > > A: jp你好世界
+> >
+> > Bot: ハロー・ワールド
 
 ![image](https://user-images.githubusercontent.com/68760718/141055694-09509677-8147-480c-bfaf-eb9a1dde221a.png)
 
