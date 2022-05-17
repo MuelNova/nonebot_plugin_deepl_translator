@@ -28,10 +28,10 @@ def isReplyTrans() -> Rule:
 
 def isTransMsg() -> Rule:
     async def _is_trans_msg(bot: Bot, event: Event, state: T_State) -> bool:
-        if not event.dict().get('reply'): # To prevent translating many times
-            if str(event.get_message()).strip().lower()[:2] in country_code:
-                return True
-        return False
+        return (
+            not event.dict().get('reply')
+            and str(event.get_message()).strip().lower()[:2] in country_code
+        )
     return Rule(_is_trans_msg)
 
 

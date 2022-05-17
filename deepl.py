@@ -28,7 +28,7 @@ class DeepL:
         """
         url = 'https://api-free.deepl.com/v2/translate'
         try:
-            api = await self.get_available_api("".join(i for i in text))
+            api = await self.get_available_api("".join(text))
             if not api:
                 return {'success': False, 'message': 'No API Available.\n没有可用的API。', 'data': None}
         except Exception as e:
@@ -41,18 +41,15 @@ class DeepL:
         if src_lang:
             data['src_lang'] = src_lang
         if isinstance(text, list):
-            url_param = "?text=" + "&text=".join(i for i in text)
+            url_param = "?text=" + "&text=".join(text)
         else:
-            url_param = "?text=" + text
+            url_param = f"?text={text}"
         try:
             async with request("POST", url+url_param, data=data) as r:
                 if r.status == 200:
                     resp = await r.json()
                     translation = resp.get("translations")
-                    if isinstance(text, list):
-                        origin_text = "\n".join(i for i in text)
-                    else:
-                        origin_text = text
+                    origin_text = "\n".join(text) if isinstance(text, list) else text
                     origin_lang = translation[0].get("detected_source_language")
                     target_text = "\n".join(i.get('text') for i in translation)
                     return {
@@ -72,9 +69,9 @@ class DeepL:
                 if r.status == 403:
                     return {'success': False, 'message': 'Authorization failed. Please supply a valid '
                                                          'api.\n授权失败。请提供有效的API参数。', 'data': None}
-                if r.status == 413 or r.status == 414:
+                if r.status in [413, 414]:
                     return {'success': False, 'message': 'The request size exceeds the limit.\n请求大小超过限制。', 'data': None}
-                if r.status == 429 or r.status == 529:
+                if r.status in [429, 529]:
                     return {'success': False, 'message': 'Too many requests. Please wait and resend your '
                                                          'request.\n请求太多。请稍候并重新发送您的请求。', 'data': None}
                 if r.status == 456:
